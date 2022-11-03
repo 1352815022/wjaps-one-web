@@ -35,6 +35,7 @@ const APP_BASE = base;
 const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE}`;
 
 const SERVER_PATH = getServerPath();
+const PROJECT_PATH = `${getServerPath()}/aps-first-api`;
 
 const LOGIN_STATUS = {
   SUCCESS: 'success',
@@ -52,10 +53,57 @@ const APP_MODULE_BTN_KEY = {
   DELETE: `${APP_BASE}_DELETE`,
 };
 
+/** 日期枚举 */
+const SEARCH_DATE_PERIOD = {
+  NONE: {
+    value: 4,
+    name: 'NONE',
+    remark: '请选择',
+    anEnum: 'NONE',
+  },
+  THIS_MONTH: {
+    value: 0,
+    name: 'THIS_MONTH',
+    remark: '本月',
+    anEnum: 'THIS_MONTH',
+  },
+  THIS_WEEK: {
+    value: 1,
+    name: 'THIS_WEEK',
+    remark: '本周',
+    anEnum: 'THIS_WEEK',
+  },
+  TODAY: {
+    value: 2,
+    name: 'TODAY',
+    remark: '今日',
+    anEnum: 'TODAY',
+  },
+  PERIOD: {
+    value: 3,
+    name: 'PERIOD',
+    remark: '自定义',
+    anEnum: 'PERIOD',
+  },
+};
+
+const ORDER_TYPE = [
+  {
+    code: 'INNER',
+    name: '内排',
+  },
+  {
+    code: 'OUTER',
+    name: '委外',
+  },
+];
 export default {
   APP_BASE,
   LOCAL_PATH,
   SERVER_PATH,
+  PROJECT_PATH,
   APP_MODULE_BTN_KEY,
   LOGIN_STATUS,
+  SEARCH_DATE_PERIOD,
+  ORDER_TYPE,
 };

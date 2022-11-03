@@ -1,0 +1,48 @@
+.container-box {
+  padding: 0;
+  :global {
+    .suid-tool-bar {
+      button {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.table-padding {
+  padding: 6px 8px !important;
+}
+
+.table-box {
+  input {
+    background-color: transparent !important;
+    color: #fff !important;
+  }
+  .ant-table-body::-webkit-scrollbar {
+    display: none;
+  }
+  .ant-table {
+    background: transparent !important;
+    .ant-table-container::after {
+      ::-webkit-scrollbar-thumb {
+        background: #000;
+      }
+    }
+  }
+  .ant-table-thead > tr > th {
+    background: #004c87 !important;
+    color: #fff;
+    font-size: 14px;
+    border: 1px solid #004c87;
+    cursor: default;
+    .ant-table-cell-scrollbar {
+      box-shadow: 0;
+    }
+  }
+  .ant-table-tbody > tr > td {
+    border-color: #004c87;
+    background: transparent !important;
+    color: #fff;
+    font-size: 14px;
+  }
+}

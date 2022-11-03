@@ -1,0 +1,36 @@
+@import '~antd/lib/style/themes/default.less';
+
+.container {
+  display: inline-block;
+  padding: 0 12px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 32px;
+  cursor: pointer;
+  &_actived {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  :global {
+    .anticon {
+      padding-left: 2px;
+      font-size: 14px !important;
+    }
+  }
+}
+
+.overlay-container > * {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: @shadow-1-down;
+}
+
+@media screen and (max-width: @screen-xs) {
+  .overlay-container {
+    width: 100% !important;
+  }
+  .overlay-container > * {
+    border-radius: 0 !important;
+  }
+}

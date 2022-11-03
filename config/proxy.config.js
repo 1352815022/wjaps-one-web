@@ -11,4 +11,11 @@ export default {
     secure: false,
     pathRewrite: { '^/api-gateway': '' },
   },
+  '/api-gateway/aps-first-api': {
+    target: 'http://127.0.0.1:8080',
+    changeOrigin: true,
+    secure: false,
+    pathRewrite: { '^/api-gateway/aps-first-api': '' },
+  },
+ 
 };
