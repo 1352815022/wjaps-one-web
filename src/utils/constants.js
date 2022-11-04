@@ -35,7 +35,7 @@ const APP_BASE = base;
 const LOCAL_PATH = process.env.NODE_ENV !== 'production' ? '..' : `../${APP_BASE}`;
 
 const SERVER_PATH = getServerPath();
-const PROJECT_PATH = `${getServerPath()}/aps-first-api`;
+const PROJECT_PATH = `${getServerPath()}/wjaps-one-api`;
 
 const LOGIN_STATUS = {
   SUCCESS: 'success',
