@@ -275,7 +275,7 @@ class Material extends Component {
 
     return (
       <>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        <div style={{height:"100%"}}><ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /></div>
         {modalVisible ? <EditModal {...this.getEditModalProps()} /> : null}
         <BatchImport
           title="上月期末数"
