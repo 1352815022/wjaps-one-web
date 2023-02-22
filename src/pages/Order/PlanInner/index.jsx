@@ -886,7 +886,7 @@ class PlanInner extends Component {
 
     return (
       <PageWrapper className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} style={{height:"600px"}}/>
+        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} style={{height:"90%"}}/>
         {modalVisible ? <EditModal {...this.getEditModalProps()} /> : null}
         {orderPlanModalVisible ? <OrderPlanModal {...this.getOrderPlanModalProps()} /> : null}
         {batchOrderModalVisible ? <BatchOrderModal {...this.getBatchOrderModalProps()} /> : null}
