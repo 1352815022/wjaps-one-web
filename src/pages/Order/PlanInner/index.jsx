@@ -605,7 +605,7 @@ class PlanInner extends Component {
         required: true,
       },
       {
-        title: '生产数量',
+        title: '完工数量',
         dataIndex: 'produceQty',
         width: 100,
         required: true,
