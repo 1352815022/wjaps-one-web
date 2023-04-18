@@ -617,6 +617,12 @@ class PlanInner extends Component {
         required: true,
       },
       {
+        title: 'SCM欠数',
+        dataIndex: 'scmOweQty',
+        width: 100,
+        required: true,
+      },
+      {
         title: '已排数量',
         dataIndex: 'totalPlanQty',
         width: 100,
