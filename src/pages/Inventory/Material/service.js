@@ -18,7 +18,15 @@ export async function save(data) {
 
   return request.post(url, data);
 }
-
+/** 喷粉导入模板 */
+export async function getNoCalcMaterialImportTemplate() {
+  const url = `${LOCAL_PATH}/local/noCalcMaterialTemplate.xlsx`;
+  return request({
+    url,
+    method: 'GET',
+    responseType: 'blob',
+  });
+}
 /** 上月期末数导入模板 */
 export async function getEndQtyImportTemplate() {
   const url = `${LOCAL_PATH}/local/materialEndQtyTemplate.xlsx`;
@@ -49,6 +57,16 @@ export async function importEndQty(data) {
 /** 导入清洗/喷粉配置 */
 export async function importPower(data) {
   const url = `${PROJECT_PATH}/u9Material/uploadPower`;
+  return request({
+    url,
+    method: 'post',
+    data,
+  });
+}
+
+/** 导入不计算的 */
+export async function importNoCalcMaterial(data) {
+  const url = `${PROJECT_PATH}/u9Material/uploadMaterialType`;
   return request({
     url,
     method: 'post',

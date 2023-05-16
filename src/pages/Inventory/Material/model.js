@@ -12,6 +12,8 @@ import {
   getPowderImportTemplate,
   importEndQty,
   importPower,
+  importNoCalcMaterial,
+  getNoCalcMaterialImportTemplate,
 } from './service';
 import { downFile } from '@/utils';
 
@@ -26,6 +28,7 @@ export default modelExtend(model, {
     modalVisible: false,
     showEndQtyImport: false,
     showPowerImport: false,
+    showNoCalcMaterialImport:false
   },
   effects: {
     *save({ payload }, { call }) {
@@ -53,6 +56,12 @@ export default modelExtend(model, {
       const ds = yield call(getPowderImportTemplate);
       if (ds.success) {
         downFile(ds.data, '料品喷粉信息导入模板.xlsx');
+      }
+    },
+    *getNoCalcMaterialImportTemplate(_, { call }) {
+      const ds = yield call(getNoCalcMaterialImportTemplate);
+      if (ds.success) {
+        downFile(ds.data, '不计算料号导入模板.xlsx');
       }
     },
 
@@ -83,5 +92,19 @@ export default modelExtend(model, {
         callback(result);
       }
     },
+    *importNoCalcMaterial({ payload, callback }, { call }) {
+      const result = yield call(importNoCalcMaterial, payload);
+      const { success, message: msg } = result || {};
+      message.destroy();
+      if (success) {
+        message.success(msg);
+      } else {
+        message.error(msg);
+      }
+      if (callback && callback instanceof Function) {
+        callback(result);
+      }
+    }
+    
   },
 });

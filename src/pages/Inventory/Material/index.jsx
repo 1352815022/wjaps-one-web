@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import { withRouter } from 'umi';
 import { connect } from 'dva';
-import { Button } from 'antd';
-import { ExtTable, ExtIcon, Space } from 'suid';
+import { Button,Tag } from 'antd';
+import { ExtTable, ExtIcon, ComboList } from 'suid';
 import EditModal from './EditModal';
 import { constants } from '@/utils';
 import BatchImport from '@/components/BatchImport';
@@ -14,6 +14,17 @@ const { PROJECT_PATH } = constants;
 class Material extends Component {
   state = {
     delId: null,
+    statusFilter: null,
+    statusOptions: [
+      {
+        code: 1,
+        name: '是',
+      },
+      {
+        code: 0,
+        name: '否',
+      }
+    ],
   };
 
   dispatchAction = ({ type, payload }) => {
@@ -99,6 +110,15 @@ class Material extends Component {
     });
   };
 
+  handlerShowNotCalcMaterialImport= () => {
+    this.dispatchAction({
+      type: 'material/updateState',
+      payload: {
+        showNoCalcMaterialImport: true,
+      },
+    });
+  };
+
   handlerShowEndQtyImport = () => {
     this.dispatchAction({
       type: 'material/updateState',
@@ -117,6 +137,12 @@ class Material extends Component {
     });
   };
 
+  handlerNoCalcMaterialDownloadImportTemplate= () => {
+    this.dispatchAction({
+      type: 'material/getNoCalcMaterialImportTemplate',
+    });
+  };
+
   /** 上月期末数导入模板 */
   handlerEndQtyDownloadImportTemplate = () => {
     this.dispatchAction({
@@ -130,6 +156,20 @@ class Material extends Component {
       type: 'material/getPowderImportTemplate',
     });
   };
+
+  handleImportNoCalcMaterial = data => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'material/importNoCalcMaterial',
+      payload: data,
+      callback: res => {
+        if (res.success) {
+          this.refresh();
+        }
+      },
+    });
+  };
+
 
   handleImportEndQty = data => {
     const { dispatch } = this.props;
@@ -211,6 +251,24 @@ class Material extends Component {
         required: true,
       },
       {
+        title: '是否计算',
+        dataIndex: 'calc',
+        width: 100,
+        required: true,
+        render:
+        tag => {
+          let color = tag===false ? 'red' : 'blue';
+          let value=tag===false ? '否' : '是';
+          return (
+            <span>
+            <Tag color={color}>
+              {value}
+            </Tag>
+            </span>
+          );
+        }
+      },
+      {
         title: '上月期末数',
         dataIndex: 'endQty',
         width: 100,
@@ -237,23 +295,64 @@ class Material extends Component {
     ];
     const toolBarProps = {
       left: (
-        <Space>
+        <Fragment>
           <Button onClick={this.refresh}>刷新</Button>
+          <Button onClick={this.handlerShowNotCalcMaterialImport}>不计算完工料号</Button>
           <Button onClick={this.handlerShowEndQtyImport}>上月期末数导入</Button>
           <Button onClick={this.handlerShowPowerImport}>产能喷粉清洗信息导入</Button>
-        </Space>
+          是否计算{' '}
+          <ComboList
+            style={{ width: '120px' }}
+            showSearch={false}
+            pagination={false}
+            dataSource={this.state.statusOptions}
+            name="name"
+            allowClear
+            field={['code']}
+            afterClear={() => this.setState({ statusFilter: null })}
+            afterSelect={item => this.setState({ statusFilter: item.code })}
+            reader={{
+              name: 'name',
+              field: ['code'],
+            }}
+          />
+          </Fragment>
+       
+
+       
       ),
     };
+    const filters = this.getTableFilters();
     return {
       columns,
       bordered: false,
       toolBar: toolBarProps,
       remotePaging: true,
+      cascadeParams: {
+        filters,
+      },
+      searchProperties: [
+        'code',
+        'name'
+      ],
       store: {
         type: 'POST',
         url: `${PROJECT_PATH}/u9Material/findByPage`,
       },
     };
+  };
+  getTableFilters = () => {
+    const {statusFilter } = this.state;
+    let filters = [];
+
+      filters.push({
+        fieldName: 'calc',
+        operator: 'EQ',
+        fieldType: 'bool',
+        value: statusFilter,
+      });
+    
+    return filters;
   };
 
   getEditModalProps = () => {
@@ -271,12 +370,31 @@ class Material extends Component {
 
   render() {
     const { material, loading } = this.props;
-    const { modalVisible, showEndQtyImport, showPowerImport } = material;
+    const { modalVisible, showEndQtyImport, showPowerImport,showNoCalcMaterialImport } = material;
 
     return (
       <>
         <div style={{height:"100%"}}><ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} /></div>
         {modalVisible ? <EditModal {...this.getEditModalProps()} /> : null}
+        <BatchImport
+          title="不计算完工料号导入"
+          showImport={showNoCalcMaterialImport}
+          closeBatchImport={() =>
+            this.dispatchAction({
+              type: 'material/updateState',
+              payload: {
+                showNoCalcMaterialImport: false,
+              },
+            })
+          }
+          fields={[
+            { field: 'code', title: '料号', required: true },
+          ]}
+          downloadImportTemplate={this.handlerNoCalcMaterialDownloadImportTemplate}
+          downloading={loading.effects['material/getNoCalcMaterialImportTemplate']}
+          sendImportData={this.handleImportNoCalcMaterial}
+          importDoing={loading.effects['material/importNoCalcMaterial']}
+        />
         <BatchImport
           title="上月期末数"
           showImport={showEndQtyImport}
@@ -298,7 +416,7 @@ class Material extends Component {
           importDoing={loading.effects['material/importEndQty']}
         />
         <BatchImport
-          title="产能、喷粉、清洗配置"
+          title="产能"
           showImport={showPowerImport}
           closeBatchImport={() =>
             this.dispatchAction({
