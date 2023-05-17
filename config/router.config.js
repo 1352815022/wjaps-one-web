@@ -165,6 +165,16 @@ export default [
             component: './Report/MaterialRequire',
             title: '物料需求计划',
           },
+          {
+            path: '/report/u9MoFinish',
+            component: './Report/U9MoFinish',
+            title: '完工单列表',
+          },
+          {
+            path: '/report/noPlanMo',
+            component: './Report/NoPlanMo',
+            title: '未排产完工单',
+          }
         ],
       },
     ],

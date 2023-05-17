@@ -143,6 +143,16 @@ const menuData = [
         name: '清洗车间进度表',
         path: '/report/washReport',
       },
+      {
+        id: '124',
+        name: '完工报告',
+        path: '/report/u9MoFinish',
+      },
+      {
+        id: '125',
+        name: '未排产完工单',
+        path: '/report/noPlanMo',
+      },
     ],
   },
 ];
