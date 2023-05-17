@@ -93,8 +93,7 @@ class U9MoFinish extends Component {
       onTableRef: inst => (this.tableRef = inst),
       store: {
         type: 'POST',
-        url: `${PROJECT_PATH}/u9MoFinish/findByPage`,
-        params: this.getTableFilters()
+        url: `${PROJECT_PATH}/u9MoFinish/findByPage`
       },
     };
   };
