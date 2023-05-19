@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ExtTable } from 'suid';
 import { Button } from 'antd';
+import { constants } from '@/utils';
 const { PROJECT_PATH } = constants;
 class DayReport extends Component {
   refresh = () => {
