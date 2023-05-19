@@ -174,6 +174,11 @@ export default [
             path: '/report/noPlanMo',
             component: './Report/NoPlanMo',
             title: '未排产完工单',
+          },
+          {
+            path: '/report/dayReport',
+            component: './Report/DayReport',
+            title: '日报',
           }
         ],
       },

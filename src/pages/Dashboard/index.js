@@ -153,6 +153,11 @@ const menuData = [
         name: '未排产完工单',
         path: '/report/noPlanMo',
       },
+      {
+        id: '126',
+        name: '日报',
+        path: '/report/dayReport',
+      }
     ],
   },
 ];
