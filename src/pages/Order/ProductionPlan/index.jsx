@@ -218,15 +218,24 @@ class ProductionPlan extends Component {
         width: 100,
         required: true,
         elem: 'DATE_PICK',
-        editFlag: true,
       },
       {
         title: '计划结束',
         dataIndex: 'endDate',
         width: 100,
         required: true,
-        elem: 'DATE_PICK',
-        editFlag: true,
+      },
+      {
+        title: '修改人',
+        dataIndex: 'lastEditorName',
+        width: 100,
+        required: true,
+      },
+      {
+        title: '修改时间',
+        dataIndex: 'lastEditedDate',
+        width: 200,
+        required: true,
       },
       {
         title: '备注',
