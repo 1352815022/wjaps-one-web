@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ExtTable, Space } from 'suid';
 import { Button,DatePicker } from 'antd';
 import { constants } from '@/utils';
-const { PROJECT_PATH, SEARCH_DATE_PERIOD } = constants;
+const { PROJECT_PATH } = constants;
 class NoPlanMo extends Component {
   state = {
     dateFilter: null
@@ -92,7 +92,7 @@ class NoPlanMo extends Component {
       },
       onTableRef: inst => (this.tableRef = inst),
       store: {
-        type: 'POST',
+        type: 'GET',
         url: `${PROJECT_PATH}/u9MoFinish/findNoPlan`
       },
     };

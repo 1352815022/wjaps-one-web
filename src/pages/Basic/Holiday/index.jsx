@@ -137,12 +137,6 @@ class Holiday extends Component {
           </span>
         ),
       },
-      // {
-      //   title: '组织',
-      //   dataIndex: 'apsOrganizeDto.name',
-      //   width: 120,
-      //   required: true,
-      // },
       {
         title: '假期名称',
         dataIndex: 'holidayName',

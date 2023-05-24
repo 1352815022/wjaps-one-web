@@ -45,8 +45,8 @@ class DayReport extends Component {
       columns,
       toolBar: toolBarProps,
       remotePaging: true,
-     // searchProperties: ['code', 'name'],
-    //  searchPlaceHolder: '请输入关键字进行查询',
+      searchProperties: ['code', 'name'],
+      searchPlaceHolder: '请输入关键字进行查询',
       onTableRef: inst => (this.tableRef = inst),
       store: {
         type: 'POST',
