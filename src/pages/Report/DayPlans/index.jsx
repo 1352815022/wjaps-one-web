@@ -139,7 +139,7 @@ class DayPlans extends Component {
           };
           break; 
       default:
-         //默认当天
+         // 默认当天
          dateRange = {
           effectiveFrom: currentDate.format(startFormat),
           effectiveTo: currentDate.format(startFormat),
@@ -353,14 +353,6 @@ class DayPlans extends Component {
     ];
     const toolBarProps = {
       layout: { leftSpan: 3, rightSpan: 21 },
-      left: (
-        <Fragment>
-          <Button style={{ marginRight: '8px' }} onClick={this.refresh}>
-            刷新
-          </Button>
-          <Button onClick={this.handleExport}>导出</Button>
-        </Fragment>
-      ),
       right: (
         <Fragment>
        

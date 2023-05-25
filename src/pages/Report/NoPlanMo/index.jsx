@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { ExtTable, Space } from 'suid';
 import { Button,DatePicker } from 'antd';
 import { constants } from '@/utils';
-const { PROJECT_PATH, SEARCH_DATE_PERIOD } = constants;
+
+const { PROJECT_PATH } = constants;
 class NoPlanMo extends Component {
   state = {
     dateFilter: null
@@ -27,6 +28,7 @@ class NoPlanMo extends Component {
       this.tableRef.remoteDataRefresh();
     }
   };
+
   onDateChange = data => {
     if (data !== null) {
       const date = data.format('YYYY-MM-DD');
@@ -39,6 +41,7 @@ class NoPlanMo extends Component {
       });
     }
   };
+
   getExtableProps = () => {
     const columns = [
       {

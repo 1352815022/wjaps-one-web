@@ -224,14 +224,7 @@ class PlanByMaterial extends Component {
     ];
     const toolBarProps = {
       layout: { leftSpan: 3, rightSpan: 21 },
-      left: (
-        <Fragment>
-          <Button style={{ marginRight: '8px' }} onClick={this.refresh}>
-            刷新
-          </Button>
-          <Button onClick={this.handleExport}>导出</Button>
-        </Fragment>
-      ),
+    
       right: (
         <Fragment>
             物料编码{' '}
