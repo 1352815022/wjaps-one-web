@@ -63,7 +63,7 @@ class NoPlanMo extends Component {
         title: '完工日期',
         dataIndex: 'finishDate',
         width: 180,
-      }, 
+      },
      {
         title: '完工数',
         dataIndex: 'finishQty',
@@ -78,13 +78,13 @@ class NoPlanMo extends Component {
         </Space>
       )
 
-      
+
     };
     const filters = this.getTableFilters()
     return {
       columns,
       toolBar: toolBarProps,
-      remotePaging: true,
+      remotePaging: false,
       sort: {
         field: { finishDate: 'desc' },
       },
