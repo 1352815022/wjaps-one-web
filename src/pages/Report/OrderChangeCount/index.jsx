@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ExtTable } from 'suid';
-import { Button, Input } from 'antd';
+import { Button, Input,DatePicker } from 'antd';
 import { constants } from '@/utils';
 
 const { PROJECT_PATH } = constants;
@@ -8,9 +8,12 @@ const { PROJECT_PATH } = constants;
 class OrderChangeCount extends Component {
   state = {
     orderNoFilter: null,
-    poFilter: null,
-    materialCodeFilter: null,
-    materialNameFilter: null,
+    startDateFilter: null,
+    endDateFilter: null,
+    materialCodeFilter:null,
+    materialNameFilter:null,
+
+    
   };
 
   refresh = () => {
@@ -19,40 +22,30 @@ class OrderChangeCount extends Component {
     }
   };
 
-  getFilters = () => {
-    const filters = [];
-    console.log(this.state);
-    if (this.state.orderNoFilter) {
-      filters.push({
-        fieldName: 'a.order_no',
-        operator: 'LK',
-        fieldType: 'string',
-        value: this.state.orderNoFilter,
-      });
+  getTableFilters = () => {
+    const { orderNoFilter, startDateFilter,endDateFilter,materialCodeFilter,materialNameFilter } = this.state;
+    const filters = {
+      startDate: '',
+      endDate:'',
+      orderNo: '',
+      materialCode:'',
+      materialName:''
+
+    };
+    if (orderNoFilter) {
+      filters.orderNo = orderNoFilter;
     }
-    if (this.state.poFilter) {
-      filters.push({
-        fieldName: 'a.po',
-        operator: 'LK',
-        fieldType: 'string',
-        value: this.state.poFilter,
-      });
+    if (startDateFilter) {
+      filters.startDate = startDateFilter;
     }
-    if (this.state.materialCodeFilter) {
-      filters.push({
-        fieldName: 'a.material_code',
-        operator: 'LK',
-        fieldType: 'string',
-        value: this.state.materialCodeFilter,
-      });
+    if (endDateFilter) {
+      filters.endDate = endDateFilter;
     }
-    if (this.state.materialNameFilter) {
-      filters.push({
-        fieldName: 'a.material_name',
-        operator: 'LK',
-        fieldType: 'string',
-        value: this.state.materialNameFilter,
-      });
+    if (materialCodeFilter) {
+      filters.materialCode = materialCodeFilter;
+    }
+    if (materialNameFilter) {
+      filters.materialName = materialNameFilter;
     }
     return filters;
   };
@@ -62,7 +55,7 @@ class OrderChangeCount extends Component {
       {
         title: '需求分类号',
         dataIndex: 'orderNo',
-        width: 100,
+        width: 200,
       },
       {
         title: '采购单号',
@@ -82,16 +75,6 @@ class OrderChangeCount extends Component {
       {
         title: '规格',
         dataIndex: 'spec',
-        width: 180,
-      },
-      {
-        title: '车间',
-        dataIndex: 'apsOrderWorkGroupName',
-        width: 180,
-      },
-      {
-        title: '班组',
-        dataIndex: 'apsOrderWorkLineName',
         width: 180,
       },
       {
@@ -139,11 +122,6 @@ class OrderChangeCount extends Component {
         },
       },
       {
-        title: '订单状态',
-        dataIndex: 'apsOrderStatusRemark',
-        width: 180,
-      },
-      {
         title: '客户',
         dataIndex: 'companyName',
         width: 180,
@@ -154,6 +132,9 @@ class OrderChangeCount extends Component {
       left: <Button onClick={this.refresh}>刷新</Button>,
       right: (
         <Fragment>
+           开始日期（往后7天为区间）：{' '}
+           <DatePicker onChange={item => {this.setState({startDateFilter:item.format('YYYY-MM-DD')})}} format="YYYY-MM-DD" />
+          
           需求分类号：{' '}
           <Input
             placeholder="输入需求分类号进行过滤"
@@ -161,15 +142,6 @@ class OrderChangeCount extends Component {
             style={{ width: '100px' }}
             onChange={e => {
               this.setState({ orderNoFilter: e.target.value });
-            }}
-          />
-          PO：{' '}
-          <Input
-            placeholder="输入PO号进行过滤"
-            allowClear
-            style={{ width: '100px' }}
-            onChange={e => {
-              this.setState({ poFilter: e.target.value });
             }}
           />
           料号：{' '}
@@ -193,7 +165,7 @@ class OrderChangeCount extends Component {
         </Fragment>
       ),
     };
-    const filters = this.getFilters();
+    const filters = this.getTableFilters();
 
     return {
       columns,
@@ -206,7 +178,8 @@ class OrderChangeCount extends Component {
       onTableRef: inst => (this.tableRef = inst),
       store: {
         type: 'POST',
-        url: `${PROJECT_PATH}/scmXbDelivery/findByPage`,
+        url: `${PROJECT_PATH}/scmXbDelivery/findChange`,
+        params: this.getTableFilters(),
       },
     };
   };
