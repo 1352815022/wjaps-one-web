@@ -98,13 +98,15 @@ class ProductionPlan extends Component {
   }
 
   state = {
-    // filters:[{fieldName:"id",operator:"EQ",value:"220F2F6A-D4F1-11EC-970A-4401BBA2DB91"},{fieldName:"orderId",operator:"EQ",value:"6236849B-D296-11EC-9B24-4401BBA2DB91"}],
-    cols: 15,
     editingKey: '',
     workGroups: [],
     workLines: [],
-    workGroupFilter: null,
-    workLineFilter: null,
+    workGroupFilter:null,
+    workLineFilter:null,
+    materialCodeFilter:null,
+    materialNameFilter:null,
+    materialSpecFilter:null,
+    orderNoFilter:null,
     columns: [],
     column1: [
       {
@@ -260,6 +262,7 @@ class ProductionPlan extends Component {
   };
 
   getTableFilters = () => {
+
     const {
       workGroupFilter,
       workLineFilter,
@@ -268,63 +271,41 @@ class ProductionPlan extends Component {
       materialSpecFilter,
       orderNoFilter,
     } = this.state;
-    const filters = [];
-    filters.push({
-      fieldName: 'status',
-      operator: 'EQ',
-      value: 'Normal',
-    });
+
+    const filters = {
+      startDate: null,
+      endDate:null,
+      orderNo: null,
+      materialCode:null,
+      materialName:null,
+      materialSpec:null,
+      workGroupId: null,
+      lineId: null
+
+    };
     if (orderNoFilter) {
-      filters.push({
-        fieldName: 'order.orderNo',
-        operator: 'LK',
-        fieldType: 'string',
-        value: orderNoFilter,
-      });
-    }
-    if (materialCodeFilter) {
-      filters.push({
-        fieldName: 'materialCode',
-        operator: 'LK',
-        fieldType: 'string',
-        value: materialCodeFilter,
-      });
-    }
-    if (materialNameFilter) {
-      filters.push({
-        fieldName: 'materialName',
-        operator: 'LK',
-        fieldType: 'string',
-        value: materialNameFilter,
-      });
-    }
-    if (materialSpecFilter) {
-      filters.push({
-        fieldName: 'materialSpec',
-        operator: 'LK',
-        fieldType: 'string',
-        value: materialSpecFilter,
-      });
+      filters.orderNo = orderNoFilter;
     }
     if (workGroupFilter) {
-      filters.push({
-        fieldName: 'workGroupId',
-        operator: 'EQ',
-        fieldType: 'string',
-        value: workGroupFilter,
-      });
+      filters.workGroupId = workGroupFilter;
     }
     if (workLineFilter) {
-      filters.push({
-        fieldName: 'lineId',
-        operator: 'EQ',
-        fieldType: 'string',
-        value: workLineFilter,
-      });
+      filters.lineId = workLineFilter;
     }
-
+    if (materialSpecFilter) {
+      filters.materialSpec = materialSpecFilter;
+    }
+    if (materialCodeFilter) {
+      filters.materialCode = materialCodeFilter;
+    }
+    if (materialNameFilter) {
+      filters.materialName = materialNameFilter;
+    }
     return filters;
   };
+  
+
+
 
   dispatchAction = ({ type, payload }) => {
     const { dispatch } = this.props;
@@ -546,9 +527,6 @@ class ProductionPlan extends Component {
           >
             保存
           </Button>
-          <Button onClick={this.refresh}>刷新</Button>
-          {/* <Button onClick={() => this.handleEvent('batchPlan')}>批量排产</Button>
-          <Button onClick={() => this.handleEvent('clearPlan')}>批量清空</Button> */}
         </Fragment>
       ),
       right: (
@@ -613,7 +591,6 @@ class ProductionPlan extends Component {
       ),
     };
     const filters = this.getTableFilters();
-
     return {
       columns: this.state.columns.map(col => {
         const c = col;
@@ -757,18 +734,18 @@ class ProductionPlan extends Component {
           startDate: null,
         },
       },
-      cascadeParams: { filters },
-      searchProperties: ['order.orderNo', 'materialCode', 'materialName'],
-      remotePaging: true,
+      remotePaging: false,
       checkbox: true,
       lineNumber: false,
-      searchPlaceHolder: '输入 单号/料号/料名 进行过滤',
+      onTableRef: inst => (this.tableRef = inst),
+      
+      cascadeParams: {
+        filters,
+      },
       store: {
         type: 'POST',
         url: `${PROJECT_PATH}/apsOrderPlan/find`,
-        params: {
-          cols: this.state.cols,
-        },
+        params: this.getTableFilters(),
         loaded: () => {
           this.editData = {};
           this.errorMsgs = {};
@@ -790,6 +767,7 @@ class ProductionPlan extends Component {
       visible: modalVisible,
       onClose: this.handleClose,
       saving: loading.effects['productionPlan/save'],
+
     };
   };
 
@@ -798,8 +776,9 @@ class ProductionPlan extends Component {
     const { modalVisible } = productionPlan;
 
     return (
+      
       <PageWrapper className={cls(styles['container-box'])}>
-        <ExtTable onTableRef={inst => (this.tableRef = inst)} {...this.getExtableProps()} />
+        <ExtTable  {...this.getExtableProps()} />
         {modalVisible ? <EditModal {...this.getEditModalProps()} /> : null}
       </PageWrapper>
     );
