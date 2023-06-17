@@ -537,7 +537,7 @@ class ProductionPlan extends Component {
             style={{ width: '120px' }}
             onChange={event => this.setState({ orderNoFilter: event.target.value })}
           />
-          物料编码{' '}
+          料号{' '}
           <Input
             allowClear
             style={{ width: '120px' }}
